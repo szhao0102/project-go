@@ -24,4 +24,9 @@ func (e *Engine) Run(addr string) (err error) {
 	return http.ListenAndServe(addr, e)
 }
 
-func (e *Engine) ServerHTTP()
+func (e *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	key := req.Method + "_" + req.URL.Path
+	if handler, ok := e.router[key]; ok {
+		handler(w, req)
+	}
+}
