@@ -1,8 +1,11 @@
 package gee
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
-type HandlerFunc func(http.ResponseWriter, *http.Request) 
+type HandlerFunc func(http.ResponseWriter, *http.Request)
 
 type Engine struct {
 	router map[string]HandlerFunc
@@ -13,11 +16,11 @@ func Create() *Engine {
 }
 
 func (e *Engine) Get(uri string, handler HandlerFunc) {
-	e.router["get_" + uri] = handler
+	e.router["GET_"+uri] = handler
 }
 
 func (e *Engine) Post(uri string, handler HandlerFunc) {
-	e.router["post_"+uri] = handler
+	e.router["POST_"+uri] = handler
 }
 
 func (e *Engine) Run(addr string) (err error) {
@@ -28,5 +31,7 @@ func (e *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	key := req.Method + "_" + req.URL.Path
 	if handler, ok := e.router[key]; ok {
 		handler(w, req)
+	} else {
+		fmt.Fprintf(w, "404 %s\n", req.URL)
 	}
 }
