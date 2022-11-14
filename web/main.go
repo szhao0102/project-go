@@ -2,15 +2,13 @@ package main
 
 import (
 	"fmt"
-	"net/http"
-
 	"szhao.com/gee"
 )
 
 func main() {
 	server := gee.Create()
-	server.Get("/", func (w http.ResponseWriter, req *http.Request) {
-		fmt.Println(req.URL)
+	server.Get("/", func (req *gee.Request, res *gee.Response) {
+		fmt.Println(req.Method())
 	})
 	err := server.Run(":80")
 	if err != nil {
