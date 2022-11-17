@@ -7,10 +7,16 @@ import (
 
 type Request struct {
 	httpReq *http.Request
+	Method  string
+	Path string
 }
 
-func (req *Request) Method() string {
-	return req.httpReq.Method
+func (req *Request) GetMethod() string {
+	return req.Method
+}
+
+func (req *Request) GetPath() string {
+	return req.Path
 }
 
 func (req *Request) Params(key string) string {

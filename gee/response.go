@@ -6,8 +6,7 @@ import (
 )
 
 type Response struct {
-	w      http.ResponseWriter
-	status int
+	w http.ResponseWriter
 }
 
 func (res *Response) Send(content string) {
@@ -15,12 +14,7 @@ func (res *Response) Send(content string) {
 	res.w.Write([]byte(content))
 }
 
-func (res *Response) SetStatus(status int) {
-	res.status = status
-}
-
 func (res *Response) Json(content any) {
-	res.status = 200
 	res.w.WriteHeader(200)
 	res.w.Header().Set("Content-Type", "application/json")
 	encoder := json.NewEncoder(res.w)
